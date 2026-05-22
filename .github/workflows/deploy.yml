@@ -1,0 +1,46 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Deploy to AWS EC2 via SSH
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_USER }}
+          TARGET: /var/www/payment-backend
+          # Exclude node_modules during copy as they will be rebuilt on the server
+          EXCLUDE: "/node_modules/, /.git/, /.github/"
+          ARGS: "-rlgoDzvc -i --delete"
+
+      - name: Install dependencies and restart API server on EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /var/www/payment-backend
+            npm install --production
+            
+            # Restart or start backend using PM2
+            pm2 describe server > /dev/null && pm2 restart server || pm2 start server.js --name "server"
+            
+            # Save PM2 process list to restore on reboot
+            pm2 save
