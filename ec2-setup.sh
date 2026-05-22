@@ -35,7 +35,17 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    # Backend Express API Proxy
+    # Direct routes to backend API (for EXPO_PUBLIC_API_URL without /api suffix)
+    location ~ ^/(customers|payments) {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    # Backend Express API Proxy (for EXPO_PUBLIC_API_URL with /api suffix)
     location /api/ {
         proxy_pass http://127.0.0.1:3000/;
         proxy_http_version 1.1;
