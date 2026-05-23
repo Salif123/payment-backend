@@ -5,8 +5,8 @@ This repository contains the complete implementation of a **Payment Collection &
 ---
 
 ## 🏗️ Architecture & Component Layout
-1. **Backend**: [`payment-backend/`](file:///d:/TEST/payment-backend) - RESTful API serving customer data, processing transactions, and logging history. Configured to run on Node.js with MySQL/MariaDB.
-2. **Frontend**: [`emi-calculator/`](file:///d:/TEST/emi-calculator) - A cross-platform app built using Expo, React Native, and React Native Web. It dynamically adjusts its layout for both desktop browsers and native mobile screens.
+1. **Backend**: [`payment-backend/`](file:///d:/COLIGO/payment-backend) - RESTful API serving customer data, processing transactions, and logging history. Configured to run on Node.js with MySQL/MariaDB.
+2. **Frontend**: [`emi-calculator/`](file:///d:/COLIGO/emi-calculator) - A cross-platform app built using Expo, React Native, and React Native Web. It dynamically adjusts its layout for both desktop browsers and native mobile screens.
 
 ---
 
@@ -158,7 +158,7 @@ Launch an EC2 instance running Ubuntu Server 22.04 LTS. Configure incoming rules
 * **Port 3000**: Backend API endpoint.
 
 ### Step 2: Automated Server Configuration
-An automated deployment file [`payment-backend/ec2-setup.sh`](file:///d:/TEST/payment-backend/ec2-setup.sh) is provided to configure the server automatically.
+An automated deployment file [`payment-backend/ec2-setup.sh`](file:///d:/COLIGO/payment-backend/ec2-setup.sh) is provided to configure the server automatically.
 1. SSH into the instance:
    ```bash
    ssh -i /path/to/key.pem ubuntu@your-ec2-ip
